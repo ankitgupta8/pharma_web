@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { initializeDrugData, getAllDrugs, clearAllDrugs } from '../../services/supabaseService';
 import { Drug } from '../../types/drug.types';
+import AIDrugGenerator from './AIDrugGenerator';
 
 interface DataImporterProps {
   onImportComplete?: (count: number) => void;
@@ -134,6 +135,13 @@ const DataImporter: React.FC<DataImporterProps> = ({ onImportComplete, drugCount
     }
   };
 
+  const handleAIGeneratedDrugs = (drugs: Drug[]) => {
+    // Convert the generated drugs to JSON and populate the textarea
+    const jsonString = JSON.stringify(drugs, null, 2);
+    setJsonInput(jsonString);
+    showMessage(`AI generated ${drugs.length} drug(s) - review and import when ready!`, 'info');
+  };
+
   return (
     
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
@@ -157,6 +165,11 @@ const DataImporter: React.FC<DataImporterProps> = ({ onImportComplete, drugCount
           </div>
         </div>
       )}
+
+      <AIDrugGenerator
+        onDrugGenerated={handleAIGeneratedDrugs}
+        drugCount={drugCount}
+      />
       
       <div style={{ marginBottom: '20px' }}>
         <h3>Required JSON Format:</h3>

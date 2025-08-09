@@ -3,10 +3,12 @@ import Layout from '../components/common/Layout';
 import DataImporter from '../components/admin/DataImporter';
 import DrugManager from '../components/admin/DrugManager';
 import { getAllDrugs } from '../services/supabaseService';
+import { generateSampleAchievementData, clearSampleAchievementData } from '../data/database';
 
 const AdminScreen: React.FC = () => {
   const [drugCount, setDrugCount] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingData, setIsGeneratingData] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'import' | 'manage'>('overview');
 
   const loadDrugCount = async () => {
@@ -28,6 +30,36 @@ const AdminScreen: React.FC = () => {
   const handleImportComplete = (importedCount: number) => {
     // Refresh the drug count after import
     loadDrugCount();
+  };
+
+  const handleGenerateSampleData = async () => {
+    setIsGeneratingData(true);
+    try {
+      await generateSampleAchievementData();
+      alert('Sample achievement data generated successfully! You can now test the achievements system.');
+    } catch (error) {
+      console.error('Error generating sample data:', error);
+      alert('Error generating sample data. Check console for details.');
+    } finally {
+      setIsGeneratingData(false);
+    }
+  };
+
+  const handleClearSampleData = async () => {
+    if (!confirm('Are you sure you want to clear all achievement data? This will reset all progress.')) {
+      return;
+    }
+    
+    setIsGeneratingData(true);
+    try {
+      await clearSampleAchievementData();
+      alert('Sample achievement data cleared successfully!');
+    } catch (error) {
+      console.error('Error clearing sample data:', error);
+      alert('Error clearing sample data. Check console for details.');
+    } finally {
+      setIsGeneratingData(false);
+    }
   };
 
   const renderTabContent = () => {
@@ -127,6 +159,53 @@ const AdminScreen: React.FC = () => {
                   }}
                 >
                   Copy Sample JSON
+                </button>
+              </div>
+            </div>
+
+            <div style={{
+              marginTop: '30px',
+              padding: '20px',
+              backgroundColor: '#fff3cd',
+              borderRadius: '8px',
+              border: '1px solid #ffeaa7'
+            }}>
+              <h4 style={{ margin: '0 0 15px 0', color: '#856404' }}>Achievement System Testing</h4>
+              <p style={{ margin: '0 0 15px 0', color: '#856404', fontSize: '14px' }}>
+                Generate sample data to test the achievements system, or clear existing data to start fresh.
+              </p>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={handleGenerateSampleData}
+                  disabled={isGeneratingData}
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#28a745',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: isGeneratingData ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    opacity: isGeneratingData ? 0.6 : 1
+                  }}
+                >
+                  {isGeneratingData ? 'Generating...' : '🏆 Generate Sample Achievement Data'}
+                </button>
+                <button
+                  onClick={handleClearSampleData}
+                  disabled={isGeneratingData}
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#dc3545',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: isGeneratingData ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    opacity: isGeneratingData ? 0.6 : 1
+                  }}
+                >
+                  {isGeneratingData ? 'Clearing...' : '🗑️ Clear Achievement Data'}
                 </button>
               </div>
             </div>

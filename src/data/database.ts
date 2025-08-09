@@ -375,6 +375,8 @@ export const getStudyStatistics = async (): Promise<{
   // Calculate study streak (consecutive days with study sessions)
   const today = new Date();
   let studyStreak = 0;
+  let foundFirstSession = false;
+  
   for (let i = 0; i < 365; i++) {
     const checkDate = new Date(today);
     checkDate.setDate(checkDate.getDate() - i);
@@ -387,9 +389,12 @@ export const getStudyStatistics = async (): Promise<{
     
     if (hasSession) {
       studyStreak++;
-    } else if (i > 0) {
-      break; // Break streak if no session found (but allow today to be empty)
+      foundFirstSession = true;
+    } else if (foundFirstSession) {
+      // Only break streak after we've found at least one session
+      break;
     }
+    // If we haven't found any sessions yet, continue looking back
   }
   
   return {
@@ -505,4 +510,146 @@ export const getAllTags = async (): Promise<string[]> => {
   const notes = await db.drugNotes.toArray();
   const allTags = notes.flatMap(note => note.tags || []);
   return Array.from(new Set(allTags)).sort();
+};
+
+// Generate sample data for testing achievements
+export const generateSampleAchievementData = async (): Promise<void> => {
+  try {
+    console.log('Generating sample achievement data...');
+    
+    // Get some random drugs for sample data
+    const allDrugs = await db.drugs.toArray();
+    if (allDrugs.length === 0) {
+      console.warn('No drugs found, cannot generate sample data');
+      return;
+    }
+    
+    const sampleDrugs = allDrugs.slice(0, Math.min(20, allDrugs.length));
+    const now = new Date();
+    
+    // Generate study sessions for the past 5 days
+    const sessions = [];
+    for (let i = 0; i < 5; i++) {
+      const sessionDate = new Date(now);
+      sessionDate.setDate(sessionDate.getDate() - i);
+      sessionDate.setHours(10 + i, 30, 0, 0); // Different times each day
+      
+      const sessionId = `sample_session_${i}`;
+      const totalCards = 8 + Math.floor(Math.random() * 7); // 8-14 cards
+      const correctCards = Math.floor(totalCards * (0.7 + Math.random() * 0.25)); // 70-95% accuracy
+      
+      sessions.push({
+        id: sessionId,
+        userId: 'local-user',
+        startTime: sessionDate,
+        endTime: new Date(sessionDate.getTime() + (15 + Math.random() * 20) * 60000), // 15-35 minutes
+        totalCards,
+        correctCards,
+        incorrectCards: totalCards - correctCards,
+        systems: [['Cardiovascular', 'Respiratory', 'Nervous'][Math.floor(Math.random() * 3)]],
+        studyMode: ['all', 'bookmarked', 'unseen'][Math.floor(Math.random() * 3)] as any,
+        timeSpent: 15 + Math.floor(Math.random() * 20) // 15-35 minutes
+      });
+    }
+    
+    // Add sessions to database
+    await db.studySessions.bulkAdd(sessions);
+    
+    // Update flashcard progress for sample drugs
+    const progressUpdates = sampleDrugs.map((drug, index) => {
+      const seen = index < 15; // First 15 drugs have been seen
+      const correctCount = seen ? 2 + Math.floor(Math.random() * 5) : 0; // 2-6 correct
+      const incorrectCount = seen ? Math.floor(Math.random() * 3) : 0; // 0-2 incorrect
+      
+      return {
+        drugId: drug.id,
+        seen,
+        correctCount,
+        incorrectCount,
+        lastSeen: seen ? new Date(now.getTime() - Math.random() * 5 * 24 * 60 * 60 * 1000) : new Date(),
+        difficulty: ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)] as any,
+        nextReviewDate: new Date(now.getTime() + Math.random() * 7 * 24 * 60 * 60 * 1000),
+        reviewInterval: 1 + Math.floor(Math.random() * 7),
+        easeFactor: 2.0 + Math.random() * 1.0,
+        needsReview: Math.random() < 0.3, // 30% need review
+        streakCount: Math.floor(Math.random() * 5)
+      };
+    });
+    
+    // Update flashcard progress
+    for (const update of progressUpdates) {
+      await db.flashcardProgress.update(update.drugId, update);
+    }
+    
+    // Generate some quiz scores
+    const quizScores = [];
+    for (let i = 0; i < 8; i++) {
+      const quizDate = new Date(now);
+      quizDate.setDate(quizDate.getDate() - Math.floor(Math.random() * 10));
+      
+      const totalQuestions = 5 + Math.floor(Math.random() * 10); // 5-14 questions
+      const score = Math.floor(totalQuestions * (0.6 + Math.random() * 0.4)); // 60-100% score
+      
+      quizScores.push({
+        id: `sample_quiz_${i}`,
+        score,
+        totalQuestions,
+        completedAt: quizDate,
+        system: ['Cardiovascular', 'Respiratory', 'Nervous', 'Endocrine'][Math.floor(Math.random() * 4)],
+        drugClass: ['Beta Blockers', 'ACE Inhibitors', 'Diuretics'][Math.floor(Math.random() * 3)],
+        timeTaken: 60 + Math.floor(Math.random() * 180) // 1-4 minutes
+      });
+    }
+    
+    // Add quiz scores
+    await db.quizScores.bulkAdd(quizScores);
+    
+    console.log('Sample achievement data generated successfully!');
+    console.log(`- ${sessions.length} study sessions`);
+    console.log(`- ${progressUpdates.length} flashcard progress records`);
+    console.log(`- ${quizScores.length} quiz scores`);
+    
+  } catch (error) {
+    console.error('Error generating sample achievement data:', error);
+    throw error;
+  }
+};
+
+// Clear sample data (for testing)
+export const clearSampleAchievementData = async (): Promise<void> => {
+  try {
+    console.log('Clearing sample achievement data...');
+    
+    // Clear study sessions
+    await db.studySessions.clear();
+    
+    // Reset flashcard progress
+    const allDrugs = await db.drugs.toArray();
+    const resetProgress = allDrugs.map(drug => ({
+      drugId: drug.id,
+      seen: false,
+      correctCount: 0,
+      incorrectCount: 0,
+      lastSeen: new Date(),
+      difficulty: 'medium' as const,
+      nextReviewDate: new Date(),
+      reviewInterval: 1,
+      easeFactor: 2.5,
+      needsReview: false,
+      streakCount: 0
+    }));
+    
+    for (const reset of resetProgress) {
+      await db.flashcardProgress.update(reset.drugId, reset);
+    }
+    
+    // Clear quiz scores
+    await db.quizScores.clear();
+    
+    console.log('Sample achievement data cleared successfully!');
+    
+  } catch (error) {
+    console.error('Error clearing sample achievement data:', error);
+    throw error;
+  }
 };

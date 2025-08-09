@@ -169,79 +169,135 @@ export const checkAchievements = (stats: {
   const unlockedAchievements: Achievement[] = [];
 
   // Check streak achievements
-  if (stats.studyStreak >= 3) unlockedAchievements.push(getAchievementById('streak_3')!);
-  if (stats.studyStreak >= 7) unlockedAchievements.push(getAchievementById('streak_7')!);
-  if (stats.studyStreak >= 30) unlockedAchievements.push(getAchievementById('streak_30')!);
-  if (stats.studyStreak >= 100) unlockedAchievements.push(getAchievementById('streak_100')!);
+  if (stats.studyStreak >= 3) {
+    const achievement = getAchievementById('streak_3');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.studyStreak >= 7) {
+    const achievement = getAchievementById('streak_7');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.studyStreak >= 30) {
+    const achievement = getAchievementById('streak_30');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.studyStreak >= 100) {
+    const achievement = getAchievementById('streak_100');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
 
   // Check accuracy achievements
-  if (stats.averageAccuracy >= 80) unlockedAchievements.push(getAchievementById('accuracy_80')!);
-  if (stats.averageAccuracy >= 90) unlockedAchievements.push(getAchievementById('accuracy_90')!);
-  if (stats.averageAccuracy >= 95) unlockedAchievements.push(getAchievementById('accuracy_95')!);
+  if (stats.averageAccuracy >= 80) {
+    const achievement = getAchievementById('accuracy_80');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.averageAccuracy >= 90) {
+    const achievement = getAchievementById('accuracy_90');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.averageAccuracy >= 95) {
+    const achievement = getAchievementById('accuracy_95');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
 
   // Check volume achievements
-  if (stats.totalStudied >= 50) unlockedAchievements.push(getAchievementById('cards_50')!);
-  if (stats.totalStudied >= 200) unlockedAchievements.push(getAchievementById('cards_200')!);
-  if (stats.totalStudied >= 500) unlockedAchievements.push(getAchievementById('cards_500')!);
-  if (stats.totalStudied >= 1000) unlockedAchievements.push(getAchievementById('cards_1000')!);
+  if (stats.totalStudied >= 50) {
+    const achievement = getAchievementById('cards_50');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.totalStudied >= 200) {
+    const achievement = getAchievementById('cards_200');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.totalStudied >= 500) {
+    const achievement = getAchievementById('cards_500');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.totalStudied >= 1000) {
+    const achievement = getAchievementById('cards_1000');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
 
   // Check session achievements
-  if (stats.sessionsCompleted >= 10) unlockedAchievements.push(getAchievementById('sessions_10')!);
-  if (stats.sessionsCompleted >= 50) unlockedAchievements.push(getAchievementById('sessions_50')!);
+  if (stats.sessionsCompleted >= 10) {
+    const achievement = getAchievementById('sessions_10');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.sessionsCompleted >= 50) {
+    const achievement = getAchievementById('sessions_50');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
 
   // Check time achievements
-  if (stats.totalTimeSpent >= 600) unlockedAchievements.push(getAchievementById('time_10h')!);
-  if (stats.totalTimeSpent >= 3000) unlockedAchievements.push(getAchievementById('time_50h')!);
+  if (stats.totalTimeSpent >= 600) {
+    const achievement = getAchievementById('time_10h');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
+  if (stats.totalTimeSpent >= 3000) {
+    const achievement = getAchievementById('time_50h');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
 
   // Check perfect quiz score
-  const hasPerfectScore = stats.quizScores.some(quiz => 
+  const hasPerfectScore = stats.quizScores && stats.quizScores.length > 0 && stats.quizScores.some(quiz =>
     quiz.score === quiz.totalQuestions && quiz.totalQuestions > 0
   );
-  if (hasPerfectScore) unlockedAchievements.push(getAchievementById('quiz_perfect')!);
+  if (hasPerfectScore) {
+    const achievement = getAchievementById('quiz_perfect');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
 
   // Check system mastery
-  const hasSystemMastery = stats.systemPerformance.some(system => system.accuracy >= 90);
-  if (hasSystemMastery) unlockedAchievements.push(getAchievementById('system_master')!);
+  const hasSystemMastery = stats.systemPerformance && stats.systemPerformance.length > 0 &&
+    stats.systemPerformance.some(system => system.accuracy >= 90);
+  if (hasSystemMastery) {
+    const achievement = getAchievementById('system_master');
+    if (achievement) unlockedAchievements.push({ ...achievement, unlockedAt: new Date() });
+  }
 
-  return unlockedAchievements.filter(Boolean);
+  return unlockedAchievements;
 };
 
 export const calculateProgress = (achievement: Achievement, stats: any): number => {
+  if (!stats) return 0;
+  
   switch (achievement.id) {
     case 'streak_3':
     case 'streak_7':
     case 'streak_30':
     case 'streak_100':
-      return Math.min(100, (stats.studyStreak / achievement.requirement) * 100);
+      return Math.min(100, Math.max(0, (stats.studyStreak || 0) / achievement.requirement * 100));
     
     case 'accuracy_80':
     case 'accuracy_90':
     case 'accuracy_95':
-      return Math.min(100, (stats.averageAccuracy / achievement.requirement) * 100);
+      return Math.min(100, Math.max(0, (stats.averageAccuracy || 0) / achievement.requirement * 100));
     
     case 'cards_50':
     case 'cards_200':
     case 'cards_500':
     case 'cards_1000':
-      return Math.min(100, (stats.totalStudied / achievement.requirement) * 100);
+      return Math.min(100, Math.max(0, (stats.totalStudied || 0) / achievement.requirement * 100));
     
     case 'sessions_10':
     case 'sessions_50':
-      return Math.min(100, (stats.sessionsCompleted / achievement.requirement) * 100);
+      return Math.min(100, Math.max(0, (stats.sessionsCompleted || 0) / achievement.requirement * 100));
     
     case 'time_10h':
     case 'time_50h':
-      return Math.min(100, (stats.totalTimeSpent / achievement.requirement) * 100);
+      return Math.min(100, Math.max(0, (stats.totalTimeSpent || 0) / achievement.requirement * 100));
     
     case 'quiz_perfect':
-      const hasPerfectScore = stats.quizScores?.some((quiz: any) => 
+      if (!stats.quizScores || stats.quizScores.length === 0) return 0;
+      const hasPerfectScore = stats.quizScores.some((quiz: any) =>
         quiz.score === quiz.totalQuestions && quiz.totalQuestions > 0
       );
-      return hasPerfectScore ? 100 : 0;
+      return hasPerfectScore ? 100 : Math.min(50, stats.quizScores.length * 10); // Show some progress based on quiz attempts
     
     case 'system_master':
-      const maxSystemAccuracy = Math.max(...(stats.systemPerformance?.map((s: any) => s.accuracy) || [0]));
-      return Math.min(100, (maxSystemAccuracy / achievement.requirement) * 100);
+      if (!stats.systemPerformance || stats.systemPerformance.length === 0) return 0;
+      const maxSystemAccuracy = Math.max(...stats.systemPerformance.map((s: any) => s.accuracy || 0));
+      return Math.min(100, Math.max(0, maxSystemAccuracy / achievement.requirement * 100));
     
     default:
       return 0;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 import Layout from '../components/common/Layout';
 import NotesManager from '../components/notes/NotesManager';
 import { Drug } from '../types/drug.types';
@@ -182,33 +183,58 @@ const DrugDetailScreen: React.FC = () => {
           {/* Mechanism of Action */}
           <div className="card fade-in">
             <h3>🔬 Mechanism of Action</h3>
-            <p style={{ 
-              fontSize: '1.1rem', 
+            <div style={{
+              fontSize: '1.1rem',
               lineHeight: '1.6',
               color: 'var(--text-primary)',
               margin: 0
             }}>
-              {drug.moa}
-            </p>
+              <ReactMarkdown
+                components={{
+                  p: ({children}) => <p style={{margin: '0 0 12px 0'}}>{children}</p>,
+                  ol: ({children}) => <ol style={{margin: '8px 0', paddingLeft: '20px'}}>{children}</ol>,
+                  ul: ({children}) => <ul style={{margin: '8px 0', paddingLeft: '20px'}}>{children}</ul>,
+                  li: ({children}) => <li style={{margin: '4px 0'}}>{children}</li>,
+                  strong: ({children}) => <strong style={{fontWeight: '600'}}>{children}</strong>
+                }}
+              >
+                {drug.moa}
+              </ReactMarkdown>
+            </div>
           </div>
 
           {/* Uses */}
           <div className="card fade-in">
             <h3>🎯 Clinical Uses</h3>
-            <div style={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
-              gap: '8px',
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
               marginTop: '12px'
             }}>
               {drug.uses.map((use, index) => (
-                <span 
+                <div
                   key={index}
                   className="badge badge-success"
-                  style={{ fontSize: '0.875rem' }}
+                  style={{
+                    fontSize: '0.875rem',
+                    padding: '12px',
+                    textAlign: 'left',
+                    lineHeight: '1.5'
+                  }}
                 >
-                  {use}
-                </span>
+                  <ReactMarkdown
+                    components={{
+                      p: ({children}) => <span style={{margin: 0, display: 'block'}}>{children}</span>,
+                      ol: ({children}) => <ol style={{margin: '4px 0', paddingLeft: '16px'}}>{children}</ol>,
+                      ul: ({children}) => <ul style={{margin: '4px 0', paddingLeft: '16px'}}>{children}</ul>,
+                      li: ({children}) => <li style={{margin: '2px 0'}}>{children}</li>,
+                      strong: ({children}) => <strong style={{fontWeight: '600'}}>{children}</strong>
+                    }}
+                  >
+                    {use}
+                  </ReactMarkdown>
+                </div>
               ))}
             </div>
           </div>
@@ -216,20 +242,35 @@ const DrugDetailScreen: React.FC = () => {
           {/* Side Effects */}
           <div className="card fade-in">
             <h3>⚠️ Side Effects</h3>
-            <div style={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
-              gap: '8px',
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
               marginTop: '12px'
             }}>
               {drug.side_effects.map((effect, index) => (
-                <span 
+                <div
                   key={index}
                   className="badge badge-warning"
-                  style={{ fontSize: '0.875rem' }}
+                  style={{
+                    fontSize: '0.875rem',
+                    padding: '12px',
+                    textAlign: 'left',
+                    lineHeight: '1.5'
+                  }}
                 >
-                  {effect}
-                </span>
+                  <ReactMarkdown
+                    components={{
+                      p: ({children}) => <span style={{margin: 0, display: 'block'}}>{children}</span>,
+                      ol: ({children}) => <ol style={{margin: '4px 0', paddingLeft: '16px'}}>{children}</ol>,
+                      ul: ({children}) => <ul style={{margin: '4px 0', paddingLeft: '16px'}}>{children}</ul>,
+                      li: ({children}) => <li style={{margin: '2px 0'}}>{children}</li>,
+                      strong: ({children}) => <strong style={{fontWeight: '600'}}>{children}</strong>
+                    }}
+                  >
+                    {effect}
+                  </ReactMarkdown>
+                </div>
               ))}
             </div>
           </div>
@@ -257,20 +298,35 @@ const DrugDetailScreen: React.FC = () => {
           {drug.contraindications && drug.contraindications.length > 0 && (
             <div className="card fade-in">
               <h3>🚫 Contraindications</h3>
-              <div style={{ 
-                display: 'flex', 
-                flexWrap: 'wrap', 
-                gap: '8px',
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
                 marginTop: '12px'
               }}>
                 {drug.contraindications.map((contraindication, index) => (
-                  <span 
+                  <div
                     key={index}
                     className="badge badge-error"
-                    style={{ fontSize: '0.875rem' }}
+                    style={{
+                      fontSize: '0.875rem',
+                      padding: '12px',
+                      textAlign: 'left',
+                      lineHeight: '1.5'
+                    }}
                   >
-                    {contraindication}
-                  </span>
+                    <ReactMarkdown
+                      components={{
+                        p: ({children}) => <span style={{margin: 0, display: 'block'}}>{children}</span>,
+                        ol: ({children}) => <ol style={{margin: '4px 0', paddingLeft: '16px'}}>{children}</ol>,
+                        ul: ({children}) => <ul style={{margin: '4px 0', paddingLeft: '16px'}}>{children}</ul>,
+                        li: ({children}) => <li style={{margin: '2px 0'}}>{children}</li>,
+                        strong: ({children}) => <strong style={{fontWeight: '600'}}>{children}</strong>
+                      }}
+                    >
+                      {contraindication}
+                    </ReactMarkdown>
+                  </div>
                 ))}
               </div>
             </div>
@@ -280,14 +336,25 @@ const DrugDetailScreen: React.FC = () => {
           {drug.dosage && (
             <div className="card fade-in">
               <h3>💊 Dosage</h3>
-              <p style={{ 
+              <div style={{
                 fontSize: '1.1rem',
                 fontWeight: '500',
                 color: 'var(--text-primary)',
-                margin: 0
+                margin: 0,
+                lineHeight: '1.6'
               }}>
-                {drug.dosage}
-              </p>
+                <ReactMarkdown
+                  components={{
+                    p: ({children}) => <p style={{margin: '0 0 12px 0'}}>{children}</p>,
+                    ol: ({children}) => <ol style={{margin: '8px 0', paddingLeft: '20px'}}>{children}</ol>,
+                    ul: ({children}) => <ul style={{margin: '8px 0', paddingLeft: '20px'}}>{children}</ul>,
+                    li: ({children}) => <li style={{margin: '4px 0'}}>{children}</li>,
+                    strong: ({children}) => <strong style={{fontWeight: '600'}}>{children}</strong>
+                  }}
+                >
+                  {drug.dosage}
+                </ReactMarkdown>
+              </div>
             </div>
           )}
 
