@@ -96,6 +96,70 @@ Required JSON Format:
 
 Body Systems (choose the most appropriate):
 ANS (Autonomic Nervous System), CNS (Central Nervous System), CVS (Cardiovascular System), Renal, Respiratory, GIT (Gastrointestinal Tract), Endocrine, Reproductive, Hematological, Immune, Musculoskeletal, Antimicrobial, Antiparasitic, Antiviral, Antifungal, Anticancer, Dermatological, Vitamins, Toxicology, Miscellaneous, Vaccines
+Here is classes of drug 
+Drugs Acting on Autonomic Nervous System
+
+Cholinergic Drugs, Anticholinergic Drugs, Ganglionic Stimulants, Ganglionic Blocking Agents, Adrenergic Drugs, a-Adrenergic Blocking Drugs, B-Adrenergic Blocking Drugs, Topical Drugs for Glaucoma
+
+Autacoids and Related Drugs
+
+Histaminergic Agonists, H 
+1
+​
+ -Antagonists, 5-Hydroxytryptamine (5-HT) Antagonists, Drugs for Migraine, Prostaglandins (PGs), Nonsteroidal Antiinflammatory Drugs (NSAIDs)/Antipyretic Analgesics, Antirheumatoid Drugs, Drugs for Gout
+
+Drugs for Respiratory Disorders
+
+Drugs for Cough, Drugs for Bronchial Asthma
+
+Hormones and Related Drugs
+
+Anterior Pituitary Hormones, Drugs Altering Anterior Pituitary Hormone Secretion, Thyroid Hormone, Thyroid Inhibitors, Insulins, Oral Antidiabetic Drugs, Corticosteroids, Topical Steroids, Androgens and Related Drugs, Drugs for Erectile Dysfunction, Estrogens and Related Drugs, Progestins, Hormonal Contraceptives, Uterine Stimulants, Uterine Relaxants
+
+Drugs Acting on Peripheral (somatic) Nervous System
+
+Skeletal Muscle Relaxants, Local Anaesthetics
+
+Drugs Acting on Central Nervous System
+
+General Anaesthetics, Preanaesthetic Medication Drugs, Sedative-Hypnotic Drugs, Antiepileptic Drugs, Antiparkinsonian Drugs, Antipsychotic Drugs, Drugs for Mania and Bipolar Disorder, Hallucinogens, Antidepressants, Antianxiety Drugs, Opioid Analgesics and Antagonists, Central Nervous System (CNS) Stimulants, Cognition Enhancers
+
+Cardiovascular Drugs
+
+Antihypertensive Drugs, Antianginal Drugs, Drugs for Peripheral Vascular Diseases, Drugs for Congestive Heart Failure, Antiarrhythmic Drugs
+
+Page 3: Contents (continued)
+Pharmacological Classification of Drugs with Doses and Preparations
+
+Drugs Acting on Kidney
+
+Diuretics, Antidiuretics
+
+Drugs Affecting Blood
+
+Haematinics, Coagulants, Anticoagulants, Fibrinolytics, Antifibrinolytics, Antiplatelet Drugs, Hypolipidaemic Drugs, Plasma Expanders
+
+Gastrointestinal Drugs
+
+Drugs for Peptic Ulcer, Antiemetics, Laxatives, Drugs for Diarrhoea
+
+Antibacterial Drugs
+
+Antibacterial Drugs, Sulfonamides, Quinolone Antimicrobials, Penicillins, Cephalosporins, Monobactams, Carbapenems, Aminoglycoside Antibiotics, Tetracyclines, Chloramphenicol, Macrolide Antibiotics, Lincosamide Antibiotics, Aminocyclitol Antibiotic, Glycopeptide Antibiotics, Oxazolidinone, Polypeptide Antibiotics, Urinary Antiseptics, Antitubercular Drugs, Antileprotic Drugs
+
+Antifungal, Antiviral, Antiprotozoal and Anthelmintic Drugs
+
+Antifungal Drugs, Antiviral Drugs (Non-retroviral), Antiretrovirus Drugs, Antimalarial Drugs, Antiamoebic Drugs, Drugs for Giardiasis, Drugs for Trichomoniasis, Drugs for Leishmaniasis, Anthelmintic Drugs
+
+Anticancer Drugs (Antineoplastic Drugs)
+
+Miscellaneous Drugs
+
+Immunosuppressant Drugs, Chelating Agents, Locally Acting Drugs on Skin and Mucous Membranes, Drugs for Aспе vulgaris, Antiseptics and Disinfectants, Ectoparasiticides, Vaccines, Antisera and Immune Globulins
+
+Only based on the above classes and systems, generate the drug information in the specified JSON format.
+
+**Important
 
 Requirements:
 - Make sure all the informations are from Authentic book katzung
