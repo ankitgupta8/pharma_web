@@ -10,6 +10,7 @@ const AdminScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGeneratingData, setIsGeneratingData] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'import' | 'manage'>('overview');
+  const [showClearConfirmation, setShowClearConfirmation] = useState(false);
 
   const loadDrugCount = async () => {
     setIsLoading(true);
@@ -46,10 +47,6 @@ const AdminScreen: React.FC = () => {
   };
 
   const handleClearSampleData = async () => {
-    if (!confirm('Are you sure you want to clear all achievement data? This will reset all progress.')) {
-      return;
-    }
-    
     setIsGeneratingData(true);
     try {
       await clearSampleAchievementData();
@@ -59,7 +56,16 @@ const AdminScreen: React.FC = () => {
       alert('Error clearing sample data. Check console for details.');
     } finally {
       setIsGeneratingData(false);
+      setShowClearConfirmation(false);
     }
+  };
+
+  const handleClearConfirmation = () => {
+    setShowClearConfirmation(true);
+  };
+
+  const handleCancelClear = () => {
+    setShowClearConfirmation(false);
   };
 
   const renderTabContent = () => {
@@ -192,7 +198,7 @@ const AdminScreen: React.FC = () => {
                   {isGeneratingData ? 'Generating...' : '🏆 Generate Sample Achievement Data'}
                 </button>
                 <button
-                  onClick={handleClearSampleData}
+                  onClick={handleClearConfirmation}
                   disabled={isGeneratingData}
                   style={{
                     padding: '8px 16px',
@@ -312,6 +318,68 @@ const AdminScreen: React.FC = () => {
 
         {/* Tab Content */}
         {renderTabContent()}
+
+        {/* Confirmation Modal */}
+        {showClearConfirmation && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000
+          }}>
+            <div style={{
+              backgroundColor: 'white',
+              padding: '30px',
+              borderRadius: '8px',
+              maxWidth: '400px',
+              width: '90%',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}>
+              <h3 style={{ margin: '0 0 15px 0', color: '#495057' }}>Confirm Clear Data</h3>
+              <p style={{ margin: '0 0 20px 0', color: '#6c757d' }}>
+                Are you sure you want to clear all achievement data? This will reset all progress and cannot be undone.
+              </p>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={handleCancelClear}
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#6c757d',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleClearSampleData}
+                  disabled={isGeneratingData}
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#dc3545',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: isGeneratingData ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    opacity: isGeneratingData ? 0.6 : 1
+                  }}
+                >
+                  {isGeneratingData ? 'Clearing...' : 'Clear Data'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
