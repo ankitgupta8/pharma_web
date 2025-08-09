@@ -171,58 +171,7 @@ const DataImporter: React.FC<DataImporterProps> = ({ onImportComplete, drugCount
         drugCount={drugCount}
       />
       
-      <div style={{ marginBottom: '20px' }}>
-        <h3>Required JSON Format:</h3>
-        <pre style={{ 
-          background: '#f5f5f5', 
-          padding: '10px', 
-          borderRadius: '4px',
-          fontSize: '12px',
-          overflow: 'auto'
-        }}>
-{`[
-  {
-    "id": 1,                    // Required: Unique number
-    "name": "Drug Name",        // Required: String
-    "class": "Drug Class",      // Required: String
-    "system": "Body System",    // Required: String
-    "moa": "Mechanism",         // Required: String
-    "uses": ["Use 1", "Use 2"], // Required: Array of strings
-    "side_effects": ["SE 1"],   // Required: Array of strings
-    "mnemonic": "Optional",     // Optional: String
-    "contraindications": [],    // Optional: Array of strings
-    "dosage": "Optional"        // Optional: String
-  }
-]
-
-// Example body systems
-ANS (Autonomic Nervous System) 
-CNS (Central Nervous System) 
-CVS (Cardiovascular System) 
-Renal 
-Respiratory 
-GIT (Gastrointestinal Tract) 
-Endocrine 
-Reproductive 
-Hematological 
-Immune 
-Musculoskeletal 
-Antimicrobial 
-Antiparasitic 
-Antiviral 
-Antifungal 
-Anticancer 
-Dermatological 
-Vitamins 
-Toxicology 
-Miscellaneous 
-Vaccines 
-Start your drug id numbering from ${drugCount != null ? drugCount+1 : 'N/A'}
-Give detailed moa, uses, side effects, and contraindications.
-Give me the drug list for 
-`}
-        </pre>
-      </div>
+      
 
       <div style={{ marginBottom: '20px' }}>
         <button 
@@ -318,6 +267,58 @@ Give me the drug list for
           <li>The import will add new drugs or update existing ones with the same ID</li>
           <li>Large imports may take some time to process</li>
         </ul>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <h3>Required JSON Format:</h3>
+        <pre style={{ 
+          background: '#f5f5f5', 
+          padding: '10px', 
+          borderRadius: '4px',
+          fontSize: '12px',
+          overflow: 'auto'
+        }}>
+{`[
+  {
+    "id": 1,                    // Required: Unique number
+    "name": "Drug Name",        // Required: String
+    "class": "Drug Class",      // Required: String
+    "system": "Body System",    // Required: String
+    "moa": "Mechanism",         // Required: String
+    "uses": ["Use 1", "Use 2"], // Required: Array of strings
+    "side_effects": ["SE 1"],   // Required: Array of strings
+    "mnemonic": "Optional",     // Optional: String
+    "contraindications": [],    // Optional: Array of strings
+    "dosage": "Optional"        // Optional: String
+  }
+]
+
+// Example body systems
+ANS (Autonomic Nervous System) 
+CNS (Central Nervous System) 
+CVS (Cardiovascular System) 
+Renal 
+Respiratory 
+GIT (Gastrointestinal Tract) 
+Endocrine 
+Reproductive 
+Hematological 
+Immune 
+Musculoskeletal 
+Antimicrobial 
+Antiparasitic 
+Antiviral 
+Antifungal 
+Anticancer 
+Dermatological 
+Vitamins 
+Toxicology 
+Miscellaneous 
+Vaccines 
+Start your drug id numbering from ${drugCount != null ? drugCount+1 : 'N/A'}
+Give detailed moa, uses, side effects, and contraindications.
+Give me the drug list for 
+`}
+        </pre>
       </div>
     </div>
   );
