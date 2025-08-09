@@ -121,10 +121,11 @@ const AIDrugGenerator: React.FC<AIDrugGeneratorProps> = ({ onDrugGenerated, drug
             disabled={isGenerating || !configStatus.geminiConfigured}
             style={{
               flex: 1,
-              padding: '10px',
+              padding: '15px',
               border: '1px solid #ddd',
               borderRadius: '4px',
-              fontSize: '14px'
+              fontSize: '16px',
+              minHeight: '50px'
             }}
           />
           <button
